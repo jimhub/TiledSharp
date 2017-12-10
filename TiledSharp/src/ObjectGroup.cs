@@ -9,9 +9,10 @@ using System.Xml.Linq;
 
 namespace TiledSharp
 {
-    public class TmxObjectGroup : ITmxElement
+    public class TmxObjectGroup : ITmxOrderedElement
     {
         public string Name {get; private set;}
+        public int ElementIndex { get; private set; }
 
         // TODO: Legacy (Tiled Java) attributes (x, y, width, height)
 
@@ -26,9 +27,10 @@ namespace TiledSharp
         public TmxList<TmxObject> Objects {get; private set;}
         public PropertyDict Properties {get; private set;}
 
-        public TmxObjectGroup(XElement xObjectGroup)
+        public TmxObjectGroup(XElement xObjectGroup, int xElementIndex)
         {
             Name = (string) xObjectGroup.Attribute("name") ?? String.Empty;
+            ElementIndex = xElementIndex;
             Color = new TmxColor(xObjectGroup.Attribute("color"));
             Opacity = (double?) xObjectGroup.Attribute("opacity") ?? 1.0;
             Visible = (bool?) xObjectGroup.Attribute("visible") ?? true;

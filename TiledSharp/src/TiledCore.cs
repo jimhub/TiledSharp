@@ -65,6 +65,11 @@ namespace TiledSharp
         string Name {get;}
     }
 
+    public interface ITmxOrderedElement : ITmxElement
+    {
+        int ElementIndex { get; }
+    }
+
     public class TmxList<T> : KeyedCollection<string, T> where T : ITmxElement
     {
         private Dictionary<string, int> nameCount

@@ -6,9 +6,10 @@ using System.Xml.Linq;
 
 namespace TiledSharp
 {
-    public class TmxImageLayer : ITmxElement
+    public class TmxImageLayer : ITmxOrderedElement
     {
         public string Name {get; private set;}
+        public int ElementIndex { get; private set; }
 
         // TODO: Legacy (Tiled Java) attributes (x, y, width, height)
         public int? Width {get; private set;}
@@ -23,10 +24,10 @@ namespace TiledSharp
 
         public PropertyDict Properties {get; private set;}
 
-        public TmxImageLayer(XElement xImageLayer, string tmxDir = "")
+        public TmxImageLayer(XElement xImageLayer, int xElementIndex, string tmxDir = "")
         {
             Name = (string) xImageLayer.Attribute("name");
-
+            ElementIndex = xElementIndex;
             Width = (int?) xImageLayer.Attribute("width");
             Height = (int?) xImageLayer.Attribute("height");
             Visible = (bool?) xImageLayer.Attribute("visible") ?? true;

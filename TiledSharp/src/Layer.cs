@@ -9,9 +9,10 @@ using System.IO.Compression;
 
 namespace TiledSharp
 {
-    public class TmxLayer : ITmxElement
+    public class TmxLayer : ITmxOrderedElement
     {
         public string Name {get; private set;}
+        public int ElementIndex { get; private set; }
 
         // TODO: Legacy (Tiled Java) attributes (x, y, width, height)
 
@@ -23,9 +24,10 @@ namespace TiledSharp
         public Collection<TmxLayerTile> Tiles {get; private set;}
         public PropertyDict Properties {get; private set;}
 
-        public TmxLayer(XElement xLayer, int width, int height)
+        public TmxLayer(XElement xLayer, int xElementIndex, int width, int height)
         {
             Name = (string) xLayer.Attribute("name");
+            ElementIndex = xElementIndex;
             Opacity = (double?) xLayer.Attribute("opacity") ?? 1.0;
             Visible = (bool?) xLayer.Attribute("visible") ?? true;
             OffsetX = (double?) xLayer.Attribute("offsetx") ?? 0.0;

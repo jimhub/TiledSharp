@@ -16,6 +16,7 @@ namespace TiledSharp
     {
         public int FirstGid {get; private set;}
         public string Name {get; private set;}
+        public int ElementIndex { get; private set; }
         public int TileWidth {get; private set;}
         public int TileHeight {get; private set;}
         public int Spacing {get; private set;}
@@ -184,8 +185,9 @@ namespace TiledSharp
             Image = new TmxImage(xTile.Element("image"), tmxDir);
 
             ObjectGroups = new TmxList<TmxObjectGroup>();
+            int objectGroupIndex = 0;
             foreach (var e in xTile.Elements("objectgroup"))
-                ObjectGroups.Add(new TmxObjectGroup(e));
+                ObjectGroups.Add(new TmxObjectGroup(e, objectGroupIndex++));
 
             AnimationFrames = new Collection<TmxAnimationFrame>();
             if (xTile.Element("animation") != null) {

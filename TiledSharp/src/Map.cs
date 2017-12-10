@@ -30,7 +30,7 @@ namespace TiledSharp
         public TmxList<TmxObjectGroup> ObjectGroups {get; private set;}
         public TmxList<TmxImageLayer> ImageLayers {get; private set;}
         public TmxList<TmxGroup> Groups { get; private set; }
-        public PropertyDict Properties {get; private set;}
+        public PropertyDict Properties {get; private set; }
 
         public TmxMap(string filename)
         {
@@ -110,24 +110,36 @@ namespace TiledSharp
             Properties = new PropertyDict(xMap.Element("properties"));
 
             Tilesets = new TmxList<TmxTileset>();
-            foreach (var e in xMap.Elements("tileset"))
-                Tilesets.Add(new TmxTileset(e, TmxDirectory));
-
             Layers = new TmxList<TmxLayer>();
-            foreach (var e in xMap.Elements("layer"))
-                Layers.Add(new TmxLayer(e, Width, Height));
-
             ObjectGroups = new TmxList<TmxObjectGroup>();
-            foreach (var e in xMap.Elements("objectgroup"))
-                ObjectGroups.Add(new TmxObjectGroup(e));
-
             ImageLayers = new TmxList<TmxImageLayer>();
-            foreach (var e in xMap.Elements("imagelayer"))
-                ImageLayers.Add(new TmxImageLayer(e, TmxDirectory));
-
             Groups = new TmxList<TmxGroup>();
-            foreach (var e in xMap.Elements("group"))
-                Groups.Add(new TmxGroup(e, Width, Height, TmxDirectory));
+
+            int elementIndex = 0;
+
+            foreach (var e in xMap.Elements())
+            {
+                switch(e.Name.ToString())
+                {
+                    case "tileset":
+                        Tilesets.Add(new TmxTileset(e, TmxDirectory));
+                        break;
+                    case "layer":
+                        Layers.Add(new TmxLayer(e, elementIndex, Width, Height));
+                        break;
+                    case "objectgroup":
+                        ObjectGroups.Add(new TmxObjectGroup(e, elementIndex));
+                        break;
+                    case "imagelayer":
+                        ImageLayers.Add(new TmxImageLayer(e, elementIndex, TmxDirectory));
+                        break;
+                    case "group":
+                        Groups.Add(new TmxGroup(e, Width, Height, TmxDirectory));
+                        break;
+                }
+
+                elementIndex++;
+            }
         }
     }
 

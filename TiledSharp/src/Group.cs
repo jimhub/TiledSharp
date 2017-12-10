@@ -32,20 +32,32 @@ namespace TiledSharp
             Properties = new PropertyDict(xGroup.Element("properties"));
 
             Layers = new TmxList<TmxLayer>();
-            foreach (var e in xGroup.Elements("layer"))
-                Layers.Add(new TmxLayer(e, width, height));
-
             ObjectGroups = new TmxList<TmxObjectGroup>();
-            foreach (var e in xGroup.Elements("objectgroup"))
-                ObjectGroups.Add(new TmxObjectGroup(e));
-
             ImageLayers = new TmxList<TmxImageLayer>();
-            foreach (var e in xGroup.Elements("imagelayer"))
-                ImageLayers.Add(new TmxImageLayer(e, tmxDirectory));
-
             Groups = new TmxList<TmxGroup>();
-            foreach (var e in xGroup.Elements("group"))
-                Groups.Add(new TmxGroup(e, width, height, tmxDirectory));
+
+            int elementIndex = 0;
+
+            foreach (var e in xGroup.Elements())
+            {
+                switch (e.Name.ToString())
+                {
+                    case "layer":
+                        Layers.Add(new TmxLayer(e, elementIndex, width, height));
+                        break;
+                    case "objectgroup":
+                        ObjectGroups.Add(new TmxObjectGroup(e, elementIndex));
+                        break;
+                    case "imagelayer":
+                        ImageLayers.Add(new TmxImageLayer(e, elementIndex, tmxDirectory));
+                        break;
+                    case "group":
+                        Groups.Add(new TmxGroup(e, width, height, tmxDirectory));
+                        break;
+                }
+
+                elementIndex++;
+            }
         }
     }
 }
