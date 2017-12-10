@@ -39,7 +39,7 @@ namespace TiledSharp
 
         public TmxMap(Stream inputStream)
         {
-            Load(XDocument.Load(new StreamReader(inputStream).ReadToEnd()));
+            Load(XDocument.Parse(new StreamReader(inputStream).ReadToEnd()));
         }
 
         public TmxMap(XDocument xDoc)
